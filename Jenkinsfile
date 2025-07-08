@@ -2,7 +2,12 @@
 // Declarative Pipeline for Python Automated Testing
 
 pipeline {
-    agent any // Pipeline will run on any available Jenkins agent
+    agent {
+        docker {
+            image 'python:3.9-slim' // 使用一个包含 Python 的 Docker 镜像
+            args '-u 0' // 某些情况下需要，避免权限问题
+        }
+    }// Pipeline will run on any available Jenkins agent
 
     // Define environment variables for Python virtual environment
     environment {
