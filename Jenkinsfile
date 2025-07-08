@@ -65,10 +65,13 @@ pipeline {
         }
     }
 
+    // ... 其他 stages ...
+
     post {
         always {
             echo "--- Pipeline Completion ---"
             echo "Pipeline finished with status: ${currentBuild.result}"
+            cleanWs() // 将 cleanWs() 移动到 always 块内
         }
         success {
             echo "Pipeline succeeded! All tests passed."
@@ -79,7 +82,6 @@ pipeline {
         failure {
             echo "Pipeline FAILED! Check logs and test reports for details."
         }
-        // Clean up the workspace after the build to ensure a clean state for next build
-        cleanWs()
     }
 }
+
