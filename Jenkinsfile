@@ -3,8 +3,7 @@
 
 pipeline {
     // Agent definition: Runs the entire pipeline on any available Jenkins agent.
-    // This is the simplest configuration and is suitable when Python/Docker CLI
-    // are expected to be available on the Jenkins agent or installed on the fly.
+    // This is the simplest configuration and works reliably when Python is installed on the Jenkins agent.
     agent any
 
     // Environment variables that will be available throughout the pipeline
@@ -26,14 +25,15 @@ pipeline {
         }
 
         // Stage 2: Setup Python Environment and Install Dependencies
-        // This stage creates a isolated Python virtual environment and installs project dependencies.
+        // This stage creates an isolated Python virtual environment and installs project dependencies.
         stage('Setup Python Environment') {
             steps {
                 echo "--- Stage: Setup Python Environment ---"
                 // Create a Python virtual environment (venv)
                 sh "python3 -m venv ${VIRTUAL_ENV_NAME}"
                 // Activate the virtual environment and install dependencies from requirements.txt
-                sh "source ${VIRTUAL_ENV_NAME}/bin/activate && pip install -r requirements.txt"
+                // Using '.' instead of 'source' for better shell compatibility (e.g., with 'dash' shell)
+                sh ". ${VIRTUAL_ENV_NAME}/bin/activate && pip install -r requirements.txt"
                 echo "Python environment set up and dependencies installed."
             }
         }
@@ -48,7 +48,7 @@ pipeline {
                 // Activate virtual environment and run pytest
                 // --junitxml: Generates JUnit XML report for Jenkins' built-in test result trend
                 // --html: Generates a self-contained HTML report (more detailed, for archiving)
-                sh "source ${VIRTUAL_ENV_NAME}/bin/activate && pytest --junitxml=${REPORTS_DIR}/junit_report.xml --html=${REPORTS_DIR}/pytest_report.html --self-contained-html"
+                sh ". ${VIRTUAL_ENV_NAME}/bin/activate && pytest --junitxml=${REPORTS_DIR}/junit_report.xml --html=${REPORTS_DIR}/pytest_report.html --self-contained-html"
                 echo "Automated tests executed."
             }
             // Post-actions specific to the 'Run Automated Tests' stage
