@@ -3,14 +3,14 @@
 
 pipeline {
     agent any
-        }
+        
     }// Pipeline will run on any available Jenkins agent
 
     // Define environment variables for Python virtual environment
     environment {
         VIRTUAL_ENV_NAME = 'venv' // Name for the virtual environment directory
         REPORTS_DIR = 'reports'   // Directory for test reports
-    }
+    
 
     stages {
         stage('Checkout Source Code') {
