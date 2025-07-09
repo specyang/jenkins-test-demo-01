@@ -31,8 +31,8 @@ def test_divide_by_zero(calculator_instance):
     print("\nRunning test_divide_by_zero (expecting exception)...")
     with pytest.raises(ValueError, match="Cannot divide by zero"):
         calculator_instance.divide(10, 0)
-//def test_failing_scenario(calculator_instance):
-    print("\nRunning a deliberately failing test...")
+#def test_failing_scenario(calculator_instance):
+    #print("\nRunning a deliberately failing test...")
     # 故意让一个简单的数学计算结果不正确，导致断言失败
     # 期望 1 + 1 = 3，但这显然是错的，所以测试会失败
-    assert calculator_instance.add(1, 1) == 3
+    #assert calculator_instance.add(1, 1) == 3
